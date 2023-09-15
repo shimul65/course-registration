@@ -4,8 +4,11 @@ import Course from '../Course/Course';
 import Cart from '../Cart/Cart';
 
 const Courses = () => {
-    const [courses, setCourses] = useState([])
-    const [selectCourse, setSelectCourse] = useState([])
+    const [courses, setCourses] = useState([]);
+    const [selectCourse, setSelectCourse] = useState([]);
+    const [totalCreditHour,setTotalCreditHour] = useState(0);
+    const [totalPrice,setTotalPrice] = useState(0);
+    const [remainingCreditHour,setRemainingCreditHour] = useState(20);
 
     useEffect(() => {
         fetch('./courses.json')
@@ -16,6 +19,16 @@ const Courses = () => {
     const handleSelectCourse = (course) => {
         const newSelectCourse = [...selectCourse, course];
         setSelectCourse(newSelectCourse);
+        let totalCreditHour = course.credit;
+        let totalPrice = course.price;
+        selectCourse.forEach(course => {
+            totalCreditHour += course.credit;
+            totalPrice += course.price;
+        })
+        const remainingCreditHour = 20 - totalCreditHour;
+        setTotalCreditHour(totalCreditHour);
+        setTotalPrice(totalPrice);
+        setRemainingCreditHour(remainingCreditHour);
     }
 
     return (
@@ -31,9 +44,13 @@ const Courses = () => {
                 }
             </div>
 
+            {/* Cart for selected course */}
             <div className="md:w-1/3 lg:w-1/4 w-full h-fit bg-white  rounded-lg mt-4 lg:mt-0 p-3 lg:p-6">
                 <Cart
                 selectCourse={selectCourse}
+                totalCreditHour={totalCreditHour}
+                totalPrice={totalPrice}
+                remainingCreditHour={remainingCreditHour}
                 ></Cart>
             </div>
 
