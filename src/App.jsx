@@ -1,10 +1,16 @@
 import './App.css'
+import Header from './Components/Header/Header'
 
 function App() {
 
   return (
     <>
-      <h1 className='text-3xl font-semibold'>Course Registration</h1>
+      <header className="container mx-auto border border-red-700 py-12">
+        <Header></Header>
+      </header>
+      <main>
+        
+      </main>
     </>
   )
 }
