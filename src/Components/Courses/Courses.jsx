@@ -2,13 +2,14 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import Course from '../Course/Course';
 import Cart from '../Cart/Cart';
+import Swal from 'sweetalert2';
 
 const Courses = () => {
     const [courses, setCourses] = useState([]);
     const [selectCourse, setSelectCourse] = useState([]);
-    const [totalCreditHour,setTotalCreditHour] = useState(0);
-    const [totalPrice,setTotalPrice] = useState(0);
-    const [remainingCreditHour,setRemainingCreditHour] = useState(20);
+    const [totalCreditHour, setTotalCreditHour] = useState(0);
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [remainingCreditHour, setRemainingCreditHour] = useState(20);
 
     useEffect(() => {
         fetch('./courses.json')
@@ -17,18 +18,37 @@ const Courses = () => {
     }, [])
 
     const handleSelectCourse = (course) => {
-        const newSelectCourse = [...selectCourse, course];
-        setSelectCourse(newSelectCourse);
+        const isExist = selectCourse.find(item => item.id === course.id);
         let totalCreditHour = course.credit;
         let totalPrice = course.price;
-        selectCourse.forEach(course => {
-            totalCreditHour += course.credit;
-            totalPrice += course.price;
-        })
-        const remainingCreditHour = 20 - totalCreditHour;
-        setTotalCreditHour(totalCreditHour);
-        setTotalPrice(totalPrice);
-        setRemainingCreditHour(remainingCreditHour);
+        if (isExist) {
+            Swal.fire({
+                title: `You have already select 
+                this course`
+            })
+        }
+        else {
+            selectCourse.forEach(course => {
+                totalCreditHour += course.credit;
+                totalPrice += course.price;
+            })
+            const remainingCreditHour = 20 - totalCreditHour;
+            if (totalCreditHour > 20) {
+                Swal.fire({
+                    icon: `error`,
+                    title: `Oops...`,
+                    text: `You don't have sufficient credit hour for 
+                    select this course`
+                })
+            }
+            else{
+                const newSelectCourse = [...selectCourse, course];
+                setSelectCourse(newSelectCourse);
+                setTotalCreditHour(totalCreditHour);
+                setTotalPrice(totalPrice);
+                setRemainingCreditHour(remainingCreditHour);
+            }
+        }
     }
 
     return (
@@ -47,10 +67,10 @@ const Courses = () => {
             {/* Cart for selected course */}
             <div className="md:w-1/3 lg:w-1/4 w-full h-fit bg-white  rounded-lg mt-4 lg:mt-0 p-3 lg:p-6">
                 <Cart
-                selectCourse={selectCourse}
-                totalCreditHour={totalCreditHour}
-                totalPrice={totalPrice}
-                remainingCreditHour={remainingCreditHour}
+                    selectCourse={selectCourse}
+                    totalCreditHour={totalCreditHour}
+                    totalPrice={totalPrice}
+                    remainingCreditHour={remainingCreditHour}
                 ></Cart>
             </div>
 
