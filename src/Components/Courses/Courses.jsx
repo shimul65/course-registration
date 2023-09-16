@@ -52,9 +52,9 @@ const Courses = () => {
     }
 
     return (
-        <div className='flex flex-col md:flex-row gap-5'>
+        <div className='flex flex-col lg:flex-row gap-5'>
             {/* Course Container */}
-            <div className="md:w-2/3 lg:w-3/4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 h-fit gap-4 p-4 lg:p-0 justify-items-center">
+            <div className="lg:w-3/4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 h-fit gap-4 p-4 lg:p-0 justify-items-center">
                 {
                     courses.map(course => <Course
                         key={course.id}
@@ -65,7 +65,7 @@ const Courses = () => {
             </div>
 
             {/* Cart for selected course */}
-            <div className="md:w-1/3 lg:w-1/4 w-full h-fit bg-white  rounded-lg mt-4 lg:mt-0 p-3 lg:p-6">
+            <div className="lg:w-1/4 h-fit bg-white  rounded-lg mt-4 lg:mt-0 mx-5 lg:mx-0 p-3 lg:p-6">
                 <Cart
                     selectCourse={selectCourse}
                     totalCreditHour={totalCreditHour}
